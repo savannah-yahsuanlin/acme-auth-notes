@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { logout } from './store';
 import { Link } from 'react-router-dom';
 
-const Home = ({ auth, logout, notes})=> {
+
+const Home = ({ auth, logout, notes })=> {
+	let itsNotes = notes.filter(ele => ele.user.username === auth.username).length
   return (
     <div>
       Welcome { auth.username }
       <button onClick={ logout }>Logout</button>
       <div>
-        You have added { notes.length } notes.
+        You have added { itsNotes } notes.
         <br />
         <Link to='/notes'>Access and Add Notes</Link>
       </div>

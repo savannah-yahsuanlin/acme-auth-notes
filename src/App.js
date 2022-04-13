@@ -1,7 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import { attemptLogin, logout } from './store';
+import { attemptLogin, logout, fetchNotes} from './store';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import Home from './Home';
 import Notes from './Notes';
@@ -9,18 +8,18 @@ import SignIn from './SignIn';
 
 
 class App extends React.Component{
+
   componentDidMount(){
     this.props.attemptLogin();
+	this.props.load()
   }
   render(){
-    const { auth } = this.props;
-    console.log(auth);
-
+    const { auth, notes} = this.props;
     if(!auth.id){
       return (
         <Switch>
           <Route path='/signin' component={ SignIn } />
-          <Redirect to='/signin' />
+          <Redirect to='/signin'/>
         </Switch>
       );
     }
@@ -36,12 +35,18 @@ class App extends React.Component{
   }
 }
 
-const mapState = state => state;
+const mapState = (state) => {
+	return state
+}
+
 const mapDispatch = (dispatch)=> {
   return {
-    attemptLogin: ()=> {
+    attemptLogin: () => {
       return dispatch(attemptLogin());
-    }
+    },
+	load: () => {
+		return dispatch(fetchNotes())
+	}
   }
 }
 
